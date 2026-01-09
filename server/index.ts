@@ -28,6 +28,12 @@ export async function createServer() {
 
   // Session Setup (using memory store - sessions reset on server restart)
   // For production with multiple instances, consider using redis or a DB-backed store
+
+  // Trust proxy for Render/Heroku deployments
+  if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1);
+  }
+
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "your-secret-key",
@@ -37,7 +43,7 @@ export async function createServer() {
         maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       },
       name: "nistha.sid",
     })
