@@ -23,8 +23,22 @@ export default function Signup() {
   const [examType, setExamType] = useState("");
   const [preparationStage, setPreparationStage] = useState("");
   const [gender, setGender] = useState("");
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profilePreview, setProfilePreview] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProfileImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +66,7 @@ export default function Signup() {
 
     setIsLoading(true);
     try {
-      await authService.signup(name, email, password, examType || undefined, preparationStage || undefined, gender);
+      await authService.signup(name, email, password, examType || undefined, preparationStage || undefined, gender, profilePreview || undefined);
       toast.success("Account created successfully!");
       // Set flag to show welcome dialog on dashboard
       sessionStorage.setItem("showWelcome", "true");
@@ -86,6 +100,28 @@ export default function Signup() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-3">
+            {/* Profile Picture Upload */}
+            <div className="flex flex-col items-center mb-4">
+              <label htmlFor="profile-upload" className="cursor-pointer group">
+                <div className="w-20 h-20 rounded-full bg-muted border-2 border-dashed border-primary/50 flex items-center justify-center overflow-hidden hover:border-primary transition-colors">
+                  {profilePreview ? (
+                    <img src={profilePreview} alt="Profile Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xs text-muted-foreground text-center px-2">Click to upload photo</span>
+                  )}
+                </div>
+              </label>
+              <input
+                id="profile-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+                disabled={isLoading}
+              />
+              <span className="text-xs text-muted-foreground mt-2">Profile Picture (Optional)</span>
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">Full Name *</label>
               <Input
@@ -167,6 +203,20 @@ export default function Signup() {
                   <SelectItem value="Beginner">Beginner</SelectItem>
                   <SelectItem value="Intermediate">Intermediate</SelectItem>
                   <SelectItem value="Advanced">Advanced</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-foreground">Gender *</label>
+              <Select value={gender} onValueChange={setGender} disabled={isLoading}>
+                <SelectTrigger className="border-input">
+                  <SelectValue placeholder="Select your gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
