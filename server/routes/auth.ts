@@ -27,24 +27,15 @@ router.post('/signup', async (req: Request, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const userId = uuidv4();
 
-        // Determine avatar: Use user-uploaded image if provided, otherwise generate based on gender
+        // Determine avatar: Use user-uploaded image if provided, otherwise use common default avatar
         let avatarUrl: string;
 
         if (profileImage && profileImage.startsWith('data:image')) {
             // User uploaded a custom profile image (base64 data URL)
             avatarUrl = profileImage;
         } else {
-            // Generate avatar based on gender using silhouette icons
-            if (gender === 'male') {
-                // Male silhouette avatar
-                avatarUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-            } else if (gender === 'female') {
-                // Female silhouette avatar
-                avatarUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135789.png';
-            } else {
-                // Other/default - neutral avatar
-                avatarUrl = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
-            }
+            // Common default avatar for all users (blue silhouette)
+            avatarUrl = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
         }
 
         await db.execute({
@@ -347,13 +338,6 @@ router.patch('/profile', requireAuth, async (req: Request, res) => {
     const userId = req.session.userId;
 
     try {
-        // First get current user to check if gender is changing
-        const currentUserResult = await db.execute({
-            sql: 'SELECT * FROM users WHERE id = ?',
-            args: [userId]
-        });
-        const currentUser = currentUserResult.rows[0] as any;
-
         const updates: string[] = [];
         const values: any[] = [];
 
@@ -372,33 +356,6 @@ router.patch('/profile', requireAuth, async (req: Request, res) => {
         if (gender !== undefined) {
             updates.push('gender = ?');
             values.push(gender);
-
-            // Auto-generate avatar based on gender (unless custom avatar is being uploaded)
-            // This updates avatar whenever profile is saved to ensure it matches gender
-            if (!avatar) {
-                // Check if current avatar is a DiceBear URL or old avatar - if so, update to silhouette
-                const currentAvatarUrl = currentUser.avatar || '';
-                const isOldAvatar = currentAvatarUrl.includes('dicebear') ||
-                    currentAvatarUrl.includes('api.dicebear.com') ||
-                    !currentAvatarUrl.includes('flaticon.com');
-
-                // Only auto-update if user doesn't have a custom base64 avatar and has old avatar
-                if (isOldAvatar && !currentAvatarUrl.startsWith('data:image')) {
-                    let newAvatarUrl: string;
-                    if (gender === 'male') {
-                        // Male silhouette avatar
-                        newAvatarUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-                    } else if (gender === 'female') {
-                        // Female silhouette avatar
-                        newAvatarUrl = 'https://cdn-icons-png.flaticon.com/512/3135/3135789.png';
-                    } else {
-                        // Other - neutral avatar
-                        newAvatarUrl = 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png';
-                    }
-                    updates.push('avatar = ?');
-                    values.push(newAvatarUrl);
-                }
-            }
         }
         if (avatar !== undefined) {
             updates.push('avatar = ?');
@@ -411,6 +368,7 @@ router.patch('/profile', requireAuth, async (req: Request, res) => {
 
         values.push(userId);
         const sql = `UPDATE users SET ${updates.join(', ')} WHERE id = ?`;
+        console.log('📝 [PROFILE UPDATE] SQL:', sql, 'Values:', values);
         await db.execute({ sql, args: values });
 
         // Return updated user
