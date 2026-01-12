@@ -253,7 +253,7 @@ export default function Journal() {
       <div className="relative min-h-[calc(100vh-64px)] w-full overflow-hidden bg-background font-['Poppins'] text-foreground transition-colors duration-300">
 
         {/* Main Content Area */}
-        <div className="flex h-full overflow-hidden">
+        <div className="flex flex-col xl:flex-row h-full overflow-auto">
 
           {/* Editor Section - Main Area */}
           <div className="flex-1 min-w-0 p-6 lg:p-8 overflow-y-auto">
@@ -365,8 +365,8 @@ export default function Journal() {
             </div>
           </div>
 
-          {/* Right Sidebar */}
-          <aside className="w-[700px] flex-shrink-0 p-6 border-l border-border bg-muted/20 overflow-y-auto hidden xl:block">
+          {/* Right Sidebar - Daily Inspiration & History */}
+          <aside className="w-full xl:w-[700px] xl:flex-shrink-0 p-4 md:p-6 xl:border-l border-border bg-muted/20 overflow-y-auto order-first xl:order-none">
 
             {/* Daily Inspiration */}
             <div className="bg-card p-8 rounded-3xl shadow-sm border border-border relative overflow-hidden group mb-8">
@@ -465,8 +465,8 @@ export default function Journal() {
             </div>
           </aside>
 
-          {/* Sidebar */}
-          <aside className="w-[400px] border-l border-border bg-glass-low p-8 hidden xl:block overflow-y-auto custom-scrollbar">
+          {/* Sidebar - This Week & Calendar */}
+          <aside className="w-full xl:w-[400px] xl:border-l border-border bg-glass-low p-4 md:p-8 overflow-y-auto custom-scrollbar order-last">
 
             {/* This Week */}
             <div className="bg-card p-8 rounded-3xl border border-border mb-6">

@@ -55,12 +55,14 @@ const navItems = [
   },
 ];
 
-// Mobile bottom nav items (subset for cleaner mobile UX)
+// Mobile bottom nav items - all 7 sections for full navigation
 const mobileNavItems = [
   { label: "Home", href: "/dashboard", icon: BarChart3 },
   { label: "Check-In", href: "/check-in", icon: Heart },
   { label: "Journal", href: "/journal", icon: BookOpen },
   { label: "Goals", href: "/goals", icon: Target },
+  { label: "Streaks", href: "/streaks", icon: Flame },
+  { label: "Tips", href: "/suggestions", icon: Lightbulb },
   { label: "Profile", href: "/profile", icon: User },
 ];
 
