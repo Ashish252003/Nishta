@@ -97,6 +97,14 @@ export default function Login() {
                 disabled={isLoading}
                 className="border-input focus:border-primary focus:ring-primary/20"
               />
+              <div className="flex justify-end">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs font-medium text-primary/80 hover:text-primary transition-colors hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {error && (

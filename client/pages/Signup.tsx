@@ -143,6 +143,10 @@ export default function Signup() {
                   <SelectItem value="CGL">CGL</SelectItem>
                   <SelectItem value="CHSL">CHSL</SelectItem>
                   <SelectItem value="GD">GD</SelectItem>
+                  <SelectItem value="MTS">MTS</SelectItem>
+                  <SelectItem value="12th Boards">12th Boards</SelectItem>
+                  <SelectItem value="NTPC">NTPC</SelectItem>
+                  <SelectItem value="JEE">JEE</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>
                 </SelectContent>
               </Select>

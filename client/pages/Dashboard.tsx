@@ -137,16 +137,29 @@ export default function Dashboard() {
 
     if (!user) return null;
 
+    // Daily Quotes Logic
+    const getDailyQuote = () => {
+        const quotes = [
+            "Believe you can and you're halfway there.",
+            "Your limitation—it's only your imagination.",
+            "Push yourself, because no one else is going to do it for you.",
+            "Great things never come from comfort zones.",
+            "Dream it. Wish it. Do it.",
+            "Success doesn’t just find you. You have to go out and get it.",
+            "The harder you work for something, the greater you'll feel when you achieve it."
+        ];
+        const dayIndex = new Date().getDay();
+        return quotes[dayIndex];
+    };
+
     return (
         <MainLayout userName={user.name} userAvatar={user.avatar}>
-            <div className="flex-1 h-full overflow-y-auto bg-background font-['Plus_Jakarta_Sans'] text-foreground relative selection:bg-primary selection:text-primary-foreground transition-colors duration-300">
-
-                {/* Blob Background - Theme Aware */}
+            <div className="flex-1 h-full overflow-y-auto bg-background/95 font-['Plus_Jakarta_Sans'] transition-colors duration-300">
                 <div
-                    className="absolute inset-0 pointer-events-none opacity-100 dark:opacity-100"
+                    className="relative min-h-screen"
                     style={{
-                        background: `
-              radial-gradient(circle at 15% 50%, hsl(var(--secondary) / 0.15) 0%, transparent 40%),
+                        backgroundImage: `
+              radial-gradient(circle at 15% 50%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
               radial-gradient(circle at 85% 30%, hsl(var(--primary) / 0.1) 0%, transparent 45%),
               radial-gradient(circle at 50% 80%, hsl(var(--secondary) / 0.1) 0%, transparent 40%)
             `,
@@ -163,7 +176,7 @@ export default function Dashboard() {
                             </button>
                             <h1 className="text-3xl font-bold text-foreground mb-1">Welcome Back, {user.name}</h1>
                             <p className="text-muted-foreground text-sm">
-                                {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                                "{getDailyQuote()}"
                             </p>
                         </div>
                         <div className="flex items-center gap-6">
@@ -469,8 +482,8 @@ export default function Dashboard() {
                                             <div
                                                 key={goal.id || idx}
                                                 className={`p-4 rounded-xl border transition-all ${goal.completed
-                                                        ? 'bg-primary/5 border-primary/30'
-                                                        : 'bg-muted/30 border-border'
+                                                    ? 'bg-primary/5 border-primary/30'
+                                                    : 'bg-muted/30 border-border'
                                                     }`}
                                             >
                                                 <div className="flex items-start gap-3">
@@ -486,8 +499,8 @@ export default function Dashboard() {
                                                         </p>
                                                         <div className="flex items-center gap-2 mt-1">
                                                             <span className={`text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${goal.type === 'weekly'
-                                                                    ? 'bg-purple-500/20 text-purple-500'
-                                                                    : 'bg-blue-500/20 text-blue-500'
+                                                                ? 'bg-purple-500/20 text-purple-500'
+                                                                : 'bg-blue-500/20 text-blue-500'
                                                                 }`}>
                                                                 {goal.type || 'daily'}
                                                             </span>

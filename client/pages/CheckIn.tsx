@@ -123,7 +123,7 @@ export default function CheckIn() {
         <div className="flex justify-between items-center mb-8 relative z-10">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-3xl font-bold text-foreground tracking-tight">Evening Reflection</h2>
+              <h2 className="text-3xl font-bold text-foreground tracking-tight">Inner Reflection</h2>
               <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
             </div>
             <p className="text-muted-foreground font-light">Pause. Breathe. Connect with yourself.</p>

@@ -64,7 +64,15 @@ export default function Journal() {
     "What part of you deserves more kindness right now?",
     "What is one thing you are proud of, even if it's tiny?",
     "What did you avoid today and why?",
-    "What made today feel even slightly better than yesterday?"
+    "What made today feel even slightly better than yesterday?",
+    "If you could say one thing to your younger self today, what would it be?",
+    "What energy did you bring into the room today?",
+    "Who or what gave you a sense of peace today?",
+    "What is one small victory you had today?",
+    "What are you looking forward to tomorrow?",
+    "Recall a moment today when you felt truly yourself.",
+    "What is a lesson you learned the hard way recently?",
+    "How did you take care of yourself today?"
   ];
 
   // Get today's question based on day of week (0=Sunday, 1=Monday, etc.)
@@ -256,7 +264,7 @@ export default function Journal() {
                 <h1 className="text-3xl md:text-4xl font-extrabold text-foreground mb-2 tracking-tight font-['Outfit']">
                   {dateString}
                 </h1>
-                <p className="text-lg text-primary/70 font-medium">Evening Reflection</p>
+                <p className="text-lg text-primary/70 font-medium">Reflection</p>
               </div>
 
               {/* Editor Card */}
@@ -455,6 +463,10 @@ export default function Journal() {
                 )}
               </div>
             </div>
+          </aside>
+
+          {/* Sidebar */}
+          <aside className="w-[400px] border-l border-border bg-glass-low p-8 hidden xl:block overflow-y-auto custom-scrollbar">
 
             {/* This Week */}
             <div className="bg-card p-8 rounded-3xl border border-border mb-6">
@@ -501,12 +513,12 @@ export default function Journal() {
                     <div
                       key={i}
                       className={`p-2 text-base rounded-lg transition-colors ${isToday
-                          ? 'bg-primary text-primary-foreground font-bold'
-                          : hasEntry
-                            ? 'bg-primary/20 text-primary font-bold'
-                            : isFuture
-                              ? 'text-muted-foreground/40'
-                              : 'text-foreground'
+                        ? 'bg-primary text-primary-foreground font-bold'
+                        : hasEntry
+                          ? 'bg-primary/20 text-primary font-bold'
+                          : isFuture
+                            ? 'text-muted-foreground/40'
+                            : 'text-foreground'
                         }`}
                     >
                       {dayNum}
@@ -517,135 +529,137 @@ export default function Journal() {
             </div>
           </aside>
         </div>
-      </div>
+      </div >
 
       {/* History Modal */}
-      {showHistoryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-card w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl border border-border overflow-hidden flex flex-col m-4">
+      {
+        showHistoryModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="bg-card w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl border border-border overflow-hidden flex flex-col m-4">
 
-            {/* Modal Header */}
-            <div className="px-8 py-6 border-b border-border flex items-center justify-between bg-muted/30">
-              <div className="flex items-center gap-3">
-                <History className="w-6 h-6 text-primary" />
-                <h2 className="text-xl font-bold text-foreground font-['Outfit']">All Journal Entries</h2>
-                <span className="text-sm text-muted-foreground">({journalEntries.length} entries)</span>
+              {/* Modal Header */}
+              <div className="px-8 py-6 border-b border-border flex items-center justify-between bg-muted/30">
+                <div className="flex items-center gap-3">
+                  <History className="w-6 h-6 text-primary" />
+                  <h2 className="text-xl font-bold text-foreground font-['Outfit']">All Journal Entries</h2>
+                  <span className="text-sm text-muted-foreground">({journalEntries.length} entries)</span>
+                </div>
+                <button
+                  onClick={() => setShowHistoryModal(false)}
+                  className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
               </div>
-              <button
-                onClick={() => setShowHistoryModal(false)}
-                className="p-2 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
 
-            {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-              {journalEntries.length === 0 ? (
-                <div className="text-center text-muted-foreground py-12">
-                  <History className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                  <p className="text-lg">No journal entries yet</p>
-                  <p className="text-sm">Start writing to see your entries here</p>
-                </div>
-              ) : (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {journalEntries.map((entry: any, idx: number) => (
-                    <div
-                      key={entry.id || idx}
-                      className="p-5 rounded-2xl bg-background border border-border hover:border-primary/50 transition-all group"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h4 className="text-base font-bold text-foreground mb-1">
-                            {getTitle(entry.content)}
-                          </h4>
-                          <p className="text-xs font-bold text-primary uppercase tracking-wider">
-                            {formatDate(entry.timestamp || entry.createdAt || entry.created_at)}
-                          </p>
-                        </div>
-                        <button
-                          onClick={async () => {
-                            if (confirm('Delete this entry?')) {
-                              try {
-                                await dataService.deleteJournalEntry(entry.id);
-                                const entries = await dataService.getJournalEntries();
-                                setJournalEntries(entries || []);
-                                toast.success('Entry deleted');
-                              } catch (err) {
-                                toast.error('Failed to delete');
-                              }
-                            }
-                          }}
-                          className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-all"
-                          title="Delete entry"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                      {(() => {
-                        const body = getBody(entry.content);
-                        const entryId = entry.id || idx.toString();
-                        const isExpanded = expandedEntries.has(entryId);
-                        const isLong = body.length > 100;
-
-                        if (!body) {
-                          return <span className="text-sm text-muted-foreground italic">No content</span>;
-                        }
-
-                        return (
-                          <div className="text-sm text-foreground/80 leading-relaxed">
-                            {isExpanded || !isLong ? (
-                              <>
-                                <p>{body}</p>
-                                {isLong && (
-                                  <button
-                                    onClick={() => {
-                                      const newSet = new Set(expandedEntries);
-                                      newSet.delete(entryId);
-                                      setExpandedEntries(newSet);
-                                    }}
-                                    className="text-primary text-xs font-bold mt-2 hover:underline"
-                                  >
-                                    Show less
-                                  </button>
-                                )}
-                              </>
-                            ) : (
-                              <>
-                                <p>{body.substring(0, 100)}
-                                  <button
-                                    onClick={() => {
-                                      const newSet = new Set(expandedEntries);
-                                      newSet.add(entryId);
-                                      setExpandedEntries(newSet);
-                                    }}
-                                    className="text-primary font-bold hover:underline ml-1"
-                                  >
-                                    ...</button>
-                                </p>
-                              </>
-                            )}
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                {journalEntries.length === 0 ? (
+                  <div className="text-center text-muted-foreground py-12">
+                    <History className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                    <p className="text-lg">No journal entries yet</p>
+                    <p className="text-sm">Start writing to see your entries here</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {journalEntries.map((entry: any, idx: number) => (
+                      <div
+                        key={entry.id || idx}
+                        className="p-5 rounded-2xl bg-background border border-border hover:border-primary/50 transition-all group"
+                      >
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <h4 className="text-base font-bold text-foreground mb-1">
+                              {getTitle(entry.content)}
+                            </h4>
+                            <p className="text-xs font-bold text-primary uppercase tracking-wider">
+                              {formatDate(entry.timestamp || entry.createdAt || entry.created_at)}
+                            </p>
                           </div>
-                        );
-                      })()}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                          <button
+                            onClick={async () => {
+                              if (confirm('Delete this entry?')) {
+                                try {
+                                  await dataService.deleteJournalEntry(entry.id);
+                                  const entries = await dataService.getJournalEntries();
+                                  setJournalEntries(entries || []);
+                                  toast.success('Entry deleted');
+                                } catch (err) {
+                                  toast.error('Failed to delete');
+                                }
+                              }
+                            }}
+                            className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-all"
+                            title="Delete entry"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                        {(() => {
+                          const body = getBody(entry.content);
+                          const entryId = entry.id || idx.toString();
+                          const isExpanded = expandedEntries.has(entryId);
+                          const isLong = body.length > 100;
 
-            {/* Modal Footer */}
-            <div className="px-8 py-4 border-t border-border flex justify-end">
-              <button
-                onClick={() => setShowHistoryModal(false)}
-                className="px-6 py-2 rounded-xl bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
-              >
-                Close
-              </button>
+                          if (!body) {
+                            return <span className="text-sm text-muted-foreground italic">No content</span>;
+                          }
+
+                          return (
+                            <div className="text-sm text-foreground/80 leading-relaxed">
+                              {isExpanded || !isLong ? (
+                                <>
+                                  <p>{body}</p>
+                                  {isLong && (
+                                    <button
+                                      onClick={() => {
+                                        const newSet = new Set(expandedEntries);
+                                        newSet.delete(entryId);
+                                        setExpandedEntries(newSet);
+                                      }}
+                                      className="text-primary text-xs font-bold mt-2 hover:underline"
+                                    >
+                                      Show less
+                                    </button>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <p>{body.substring(0, 100)}
+                                    <button
+                                      onClick={() => {
+                                        const newSet = new Set(expandedEntries);
+                                        newSet.add(entryId);
+                                        setExpandedEntries(newSet);
+                                      }}
+                                      className="text-primary font-bold hover:underline ml-1"
+                                    >
+                                      ...</button>
+                                  </p>
+                                </>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-8 py-4 border-t border-border flex justify-end">
+                <button
+                  onClick={() => setShowHistoryModal(false)}
+                  className="px-6 py-2 rounded-xl bg-muted text-foreground font-medium hover:bg-muted/80 transition-colors"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </MainLayout>
+        )
+      }
+    </MainLayout >
   );
 }

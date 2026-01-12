@@ -21,6 +21,7 @@ export default function Profile() {
     email: "",
     examType: "",
     preparationStage: "",
+    gender: "",
   });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -38,6 +39,7 @@ export default function Profile() {
           email: data.user.email || "",
           examType: data.user.examType || "CHSL",
           preparationStage: data.user.preparationStage || "Intermediate",
+          gender: data.user.gender || "male",
         });
       } catch (error) {
         navigate("/login");
@@ -63,6 +65,7 @@ export default function Profile() {
         name: formData.name,
         examType: formData.examType,
         preparationStage: formData.preparationStage,
+        gender: formData.gender,
       });
       setUser(updatedUser);
       toast.success("Profile updated successfully!");
@@ -211,6 +214,23 @@ export default function Profile() {
                     />
                     <p className="text-[10px] text-muted-foreground mt-2 font-light italic">* Contact support to update email</p>
                   </div>
+                  <div className="group/input">
+                    <label className="block text-[11px] font-bold text-primary/70 mb-2 tracking-widest uppercase transition-colors group-focus-within/input:text-primary">
+                      Gender
+                    </label>
+                    <div className="relative">
+                      <select
+                        className="w-full bg-transparent border-b border-border pb-3 text-foreground appearance-none cursor-pointer focus:outline-none focus:border-b-2 focus:border-primary transition-all"
+                        value={formData.gender || "male"}
+                        onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                      >
+                        <option className="bg-card text-foreground" value="male">Male</option>
+                        <option className="bg-card text-foreground" value="female">Female</option>
+                        <option className="bg-card text-foreground" value="other">Other</option>
+                      </select>
+                      <ChevronDown className="absolute right-0 top-3 pointer-events-none text-muted-foreground group-hover/input:text-foreground transition-colors w-5 h-5" />
+                    </div>
+                  </div>
                 </div>
               </form>
             </div>
@@ -240,6 +260,10 @@ export default function Profile() {
                       <option className="bg-card text-foreground">CHSL</option>
                       <option className="bg-card text-foreground">CGL</option>
                       <option className="bg-card text-foreground">MTS</option>
+                      <option className="bg-card text-foreground">12th Boards</option>
+                      <option className="bg-card text-foreground">NTPC</option>
+                      <option className="bg-card text-foreground">JEE</option>
+                      <option className="bg-card text-foreground">Other</option>
                     </select>
                     <ChevronDown className="absolute right-0 top-3 pointer-events-none text-muted-foreground group-hover/input:text-foreground transition-colors w-5 h-5" />
                   </div>

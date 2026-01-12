@@ -310,7 +310,7 @@ export default function Streaks() {
             </div>
 
             {/* Activity Calendar - Current Month */}
-            <div className="md:col-span-2 rounded-[1.5rem] glass-high p-6 md:p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+            <div id="calendar-view" className="md:col-span-2 rounded-[1.5rem] glass-high p-6 md:p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h3 className="font-['Outfit'] font-semibold text-lg text-foreground flex items-center gap-2">
@@ -426,23 +426,6 @@ export default function Streaks() {
                   </LineChart>
                 </ResponsiveContainer>
               </div>
-            </div>
-
-            {/* Keep Going Strong Card */}
-            <div className="relative glass-high rounded-[1.5rem] overflow-hidden p-6 flex flex-col justify-center items-center text-center shadow-lg hover:-translate-y-1 transition-transform duration-200">
-              <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-              <div className="relative z-10 p-2 bg-muted rounded-full mb-4 ring-1 ring-border">
-                <Dumbbell className="w-8 h-8 text-orange-500" />
-              </div>
-              <h3 className="relative z-10 font-['Outfit'] font-bold text-foreground text-xl mb-2">
-                Keep Going Strong!
-              </h3>
-              <p className="relative z-10 text-muted-foreground text-sm leading-relaxed mb-6">
-                Your streak shows commitment. Every day you show up is a victory.
-              </p>
-              <button className="relative z-10 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold rounded-lg transition-colors w-full shadow-lg">
-                View Full History
-              </button>
             </div>
 
           </div>

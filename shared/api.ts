@@ -5,6 +5,7 @@ export interface User {
   avatar?: string;
   examType?: string;
   preparationStage?: string;
+  gender?: string;
 }
 
 export interface MoodEntry {
