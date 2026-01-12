@@ -186,6 +186,63 @@ router.post('/logout', (req: Request, res) => {
     });
 });
 
+// Check if email exists (for password reset)
+router.post('/check-email', async (req: Request, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ exists: false, message: 'Email is required' });
+    }
+
+    try {
+        const result = await db.execute({
+            sql: 'SELECT id FROM users WHERE email = ?',
+            args: [email]
+        });
+        res.json({ exists: result.rows.length > 0 });
+    } catch (error) {
+        console.error('Check email error:', error);
+        res.status(500).json({ exists: false, message: 'Internal server error' });
+    }
+});
+
+// Reset password
+router.post('/reset-password', async (req: Request, res) => {
+    const { email, newPassword } = req.body;
+
+    if (!email || !newPassword) {
+        return res.status(400).json({ message: 'Email and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    try {
+        // Check if user exists
+        const userResult = await db.execute({
+            sql: 'SELECT id FROM users WHERE email = ?',
+            args: [email]
+        });
+
+        if (userResult.rows.length === 0) {
+            return res.status(404).json({ message: 'No account found with this email' });
+        }
+
+        // Hash new password and update
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await db.execute({
+            sql: 'UPDATE users SET password_hash = ? WHERE email = ?',
+            args: [hashedPassword, email]
+        });
+
+        res.json({ message: 'Password reset successfully' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 // Get Current User
 router.get('/me', requireAuth, async (req: Request, res) => {
     console.log('🔵 [ME] Request received, session userId:', req.session.userId);
