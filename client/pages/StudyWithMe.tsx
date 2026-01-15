@@ -532,8 +532,8 @@ export default function StudyWithMe() {
     return (
         <div className={`min-h-screen ${bgClass} ${textClass} transition-colors duration-300`}>
             <div className="flex flex-col lg:flex-row min-h-screen">
-                {/* Timer Section */}
-                <div className={`flex-1 flex flex-col items-center justify-between p-8 lg:p-12 ${cardBgClass} border-r ${isDark ? 'border-zinc-800' : 'border-zinc-300 shadow-lg'} relative`}>
+                {/* Timer Section - 70% */}
+                <div className={`lg:flex-[2.3] flex flex-col items-center justify-between p-8 lg:p-12 ${cardBgClass} border-r ${isDark ? 'border-zinc-800' : 'border-zinc-300 shadow-lg'} relative`}>
                     {/* Header */}
                     <div className="w-full flex justify-between items-center">
                         <button
@@ -713,18 +713,15 @@ export default function StudyWithMe() {
                         </div>
                         <button
                             onClick={toggleTimer}
-                            className="mt-6 text-cyan-500 font-medium hover:text-cyan-400 transition-colors uppercase tracking-widest text-xs border-b border-cyan-500/30 pb-0.5 flex items-center gap-2"
+                            className={`mt-6 w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg ${isBreak
+                                ? 'bg-green-500 hover:bg-green-400 shadow-green-500/30'
+                                : 'bg-cyan-500 hover:bg-cyan-400 shadow-cyan-500/30'
+                                } text-white`}
                         >
                             {isRunning ? (
-                                <>
-                                    <Pause className="w-4 h-4" />
-                                    pause
-                                </>
+                                <Pause className="w-6 h-6" />
                             ) : (
-                                <>
-                                    <Play className="w-4 h-4" />
-                                    start
-                                </>
+                                <Play className="w-6 h-6 ml-1" />
                             )}
                         </button>
                     </div>
@@ -733,15 +730,15 @@ export default function StudyWithMe() {
                     <div className="w-full max-w-sm">
                         <button
                             onClick={finishSession}
-                            className={`w-full ${isBreak ? 'bg-green-500 hover:bg-green-400 shadow-green-500/30' : 'bg-cyan-500 hover:bg-cyan-400 shadow-cyan-500/30'} text-white font-bold py-4 rounded-full transition-all shadow-lg uppercase tracking-widest text-sm`}
+                            className="w-full bg-red-500 hover:bg-red-400 shadow-red-500/30 text-white font-bold py-4 rounded-full transition-all shadow-lg uppercase tracking-widest text-sm"
                         >
                             Finish Session
                         </button>
                     </div>
                 </div>
 
-                {/* Tasks Section */}
-                <div className={`flex-1 lg:flex-[1.2] flex flex-col p-8 lg:p-12 ${isDark ? 'bg-zinc-950' : 'bg-zinc-50'}`}>
+                {/* Tasks Section - 30% */}
+                <div className={`lg:flex-[1] flex flex-col p-8 lg:p-12 ${isDark ? 'bg-zinc-950' : 'bg-zinc-50'}`}>
                     <div className="flex items-center gap-3 mb-6">
                         <ListTodo className={`w-6 h-6 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`} />
                         <h2 className={`text-2xl font-bold ${isDark ? 'text-zinc-200' : 'text-zinc-800'}`}>Tasks</h2>
