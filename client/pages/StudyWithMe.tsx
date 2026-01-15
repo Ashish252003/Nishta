@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '@/utils/authService';
-import { X, Sun, Moon, Play, Pause, Flame, Target, BarChart3, Info, GripHorizontal, ChevronDown, Check, ArrowRight, Plus } from 'lucide-react';
+import { X, Sun, Moon, Play, Pause, Flame, Target, BarChart3, Info, GripHorizontal, ChevronDown, Check, ArrowRight, ArrowLeft, Plus } from 'lucide-react';
 
 interface Session {
     start: Date;
@@ -557,17 +557,24 @@ export default function StudyWithMe() {
             <div className="w-full max-w-7xl mx-auto flex flex-col gap-8">
 
                 {/* Navbar - Simplified */}
+                {/* Navbar - Simplified */}
                 <div className="flex justify-between items-center px-2">
-                    <button onClick={() => navigate('/dashboard')} className="hover:opacity-75 transition-opacity">
-                        <h1 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className={`p-2 rounded-full transition-colors ${isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-200'}`}
+                        >
+                            <ArrowLeft size={24} className={isDark ? 'text-gray-200' : 'text-gray-700'} />
+                        </button>
+                        <h1 className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                             Study With Me
                         </h1>
-                    </button>
+                    </div>
                     <button
                         onClick={() => setIsDark(!isDark)}
                         className={`p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors ${isDark ? 'text-yellow-400' : 'text-gray-500'}`}
                     >
-                        {isDark ? <Sun size={24} /> : <Moon size={24} />}
+                        {isDark ? <Sun size={28} /> : <Moon size={28} />}
                     </button>
                 </div>
 
@@ -644,28 +651,28 @@ export default function StudyWithMe() {
                     </div>
 
                     {/* Analytics Section */}
-                    <div className="col-span-12 flex flex-col gap-4 mt-3">
+                    <div className="col-span-12 flex flex-col gap-6 mt-6">
                         <div className="flex justify-between items-end px-2">
-                            <h2 className={`text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'} uppercase tracking-wider`}>Performance Analytics</h2>
-                            <button className="text-xs font-bold bg-[#06b6d4]/10 text-[#06b6d4] px-3 py-1.5 rounded-lg hover:bg-[#06b6d4]/20 transition-colors uppercase">Weekly View</button>
+                            <h2 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'} uppercase tracking-wider`}>Performance Analytics</h2>
+                            <button className="text-sm font-bold bg-[#06b6d4]/10 text-[#06b6d4] px-4 py-2 rounded-lg hover:bg-[#06b6d4]/20 transition-colors uppercase">Weekly View</button>
                         </div>
 
-                        <div className="grid grid-cols-12 gap-5">
+                        <div className="grid grid-cols-12 gap-8">
                             {/* Weekly Overview Chart - Using API Data */}
-                            <div className={`col-span-12 lg:col-span-8 ${cardBgClass} border ${borderClass} rounded-xl p-7 flex flex-col min-h-[340px]`}>
-                                <div className="flex justify-between items-start mb-7">
+                            <div className={`col-span-12 lg:col-span-8 ${cardBgClass} border ${borderClass} rounded-2xl p-9 flex flex-col min-h-[420px]`}>
+                                <div className="flex justify-between items-start mb-9">
                                     <div>
-                                        <h3 className="text-base font-bold text-gray-500 uppercase tracking-tight mb-1">Weekly Overview</h3>
-                                        <p className={`text-4xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                                        <h3 className="text-lg font-bold text-gray-500 uppercase tracking-tight mb-2">Weekly Overview</h3>
+                                        <p className={`text-5xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
                                             {Math.floor(focusStats.totalFocusMinutes / 60)}h {focusStats.totalFocusMinutes % 60}m
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <p className={`text-xs ${mutedTextClass} mb-1`}>Sessions: {focusStats.completedSessions}/{focusStats.totalSessions}</p>
-                                        <p className={`text-xs ${mutedTextClass}`}>Goals: {focusStats.goalsCompleted}/{focusStats.goalsSet}</p>
+                                        <p className={`text-sm ${mutedTextClass} mb-1`}>Sessions: {focusStats.completedSessions}/{focusStats.totalSessions}</p>
+                                        <p className={`text-sm ${mutedTextClass}`}>Goals: {focusStats.goalsCompleted}/{focusStats.goalsSet}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-end justify-between h-full gap-4 px-3">
+                                <div className="flex items-end justify-between h-full gap-6 px-4">
                                     {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => {
                                         const maxMins = Math.max(...focusStats.weeklyData, 60);
                                         const h = focusStats.weeklyData[i] > 0 ? Math.max(10, (focusStats.weeklyData[i] / maxMins) * 100) : 5;
@@ -673,20 +680,20 @@ export default function StudyWithMe() {
                                         const dayIndex = today === 0 ? 6 : today - 1;
                                         const isToday = i === dayIndex;
                                         return (
-                                            <div key={i} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer h-full justify-end">
-                                                <div className={`text-xs font-medium ${mutedTextClass} opacity-0 group-hover:opacity-100 transition-opacity`}>
+                                            <div key={i} className="flex-1 flex flex-col items-center gap-3 group cursor-pointer h-full justify-end">
+                                                <div className={`text-sm font-medium ${mutedTextClass} opacity-0 group-hover:opacity-100 transition-opacity`}>
                                                     {focusStats.weeklyData[i]}m
                                                 </div>
                                                 <div
-                                                    className={`w-full rounded-lg transition-colors ${isToday
+                                                    className={`w-full rounded-xl transition-colors ${isToday
                                                         ? 'bg-[#06b6d4] shadow-[0_0_18px_rgba(6,182,212,0.5)]'
                                                         : focusStats.weeklyData[i] > 0
                                                             ? `bg-[#06b6d4]/60`
                                                             : `${isDark ? 'bg-gray-800' : 'bg-gray-100'}`
                                                         } group-hover:bg-[#06b6d4]/80`}
-                                                    style={{ height: `${h}%`, minHeight: '8px' }}
+                                                    style={{ height: `${h}%`, minHeight: '12px' }}
                                                 ></div>
-                                                <span className={`text-sm font-bold ${isToday ? 'text-[#06b6d4]' : 'text-gray-400'}`}>{day}</span>
+                                                <span className={`text-base font-bold ${isToday ? 'text-[#06b6d4]' : 'text-gray-400'}`}>{day}</span>
                                             </div>
                                         );
                                     })}
@@ -694,53 +701,52 @@ export default function StudyWithMe() {
                             </div>
 
                             {/* Stats Side Column - Using API Data */}
-                            <div className="col-span-12 lg:col-span-4 flex flex-col gap-4">
+                            <div className="col-span-12 lg:col-span-4 flex flex-col gap-6">
                                 {/* Focus Streak */}
-                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-xl p-4 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
-                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-orange-500/10' : 'bg-orange-100'} flex items-center justify-center text-orange-500`}>
-                                        <Flame size={24} />
+                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-2xl p-6 flex items-center gap-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
+                                    <div className={`w-16 h-16 rounded-2xl ${isDark ? 'bg-orange-500/10' : 'bg-orange-100'} flex items-center justify-center text-orange-500`}>
+                                        <Flame size={32} />
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-tight">Focus Streak</h4>
-                                        <p className={`text-lg font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-tight">Focus Streak</h4>
+                                        <p className={`text-2xl font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
                                             {focusStats.focusStreak} Days
                                         </p>
                                     </div>
                                 </div>
 
-                                {/* Daily Goal */}
-                                {/* Daily Goal - User Driven */}
-                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-xl p-4 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
-                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-pink-500/10' : 'bg-pink-100'} flex items-center justify-center text-pink-500`}>
-                                        <Target size={24} />
+                                {/* Hours Focused */}
+                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-2xl p-6 flex items-center gap-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
+                                    <div className={`w-16 h-16 rounded-2xl ${isDark ? 'bg-pink-500/10' : 'bg-pink-100'} flex items-center justify-center text-pink-500`}>
+                                        <Target size={32} />
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-tight">Hours Focused</h4>
-                                        <p className={`text-lg font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-tight">Hours Focused</h4>
+                                        <p className={`text-2xl font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
                                             {Math.floor(focusStats.totalFocusMinutes / 60)}h {focusStats.totalFocusMinutes % 60}m
                                         </p>
                                     </div>
                                 </div>
 
                                 {/* Total Focus */}
-                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-xl p-4 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
-                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-emerald-500/10' : 'bg-emerald-100'} flex items-center justify-center text-emerald-500`}>
-                                        <Target size={24} />
+                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-2xl p-6 flex items-center gap-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
+                                    <div className={`w-16 h-16 rounded-2xl ${isDark ? 'bg-emerald-500/10' : 'bg-emerald-100'} flex items-center justify-center text-emerald-500`}>
+                                        <Target size={32} />
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-tight">Total Focus</h4>
-                                        <p className={`text-lg font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{focusStats.totalFocusMinutes} mins</p>
+                                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-tight">Total Focus</h4>
+                                        <p className={`text-2xl font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{focusStats.totalFocusMinutes} mins</p>
                                     </div>
                                 </div>
 
                                 {/* Total Breaks */}
-                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-xl p-4 flex items-center gap-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
-                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-cyan-500/10' : 'bg-cyan-100'} flex items-center justify-center text-cyan-500`}>
-                                        <BarChart3 size={24} />
+                                <div className={`flex-1 ${cardBgClass} border ${borderClass} rounded-2xl p-6 flex items-center gap-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors`}>
+                                    <div className={`w-16 h-16 rounded-2xl ${isDark ? 'bg-cyan-500/10' : 'bg-cyan-100'} flex items-center justify-center text-cyan-500`}>
+                                        <BarChart3 size={32} />
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-tight">Total Breaks</h4>
-                                        <p className={`text-lg font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{focusStats.totalBreakMinutes} mins</p>
+                                        <h4 className="text-sm font-bold text-gray-400 uppercase tracking-tight">Total Breaks</h4>
+                                        <p className={`text-2xl font-bold ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>{focusStats.totalBreakMinutes} mins</p>
                                     </div>
                                 </div>
                             </div>
