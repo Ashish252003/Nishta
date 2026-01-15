@@ -271,26 +271,176 @@ export default function StudyWithMe() {
                         )}
                     </div>
 
-                    {/* Today's Stats */}
-                    {completedSessions.length > 0 && (
-                        <div className={`mt-8 ${cardBgClass} rounded-2xl p-6 border ${isDark ? 'border-zinc-800' : 'border-zinc-200'}`}>
-                            <h3 className="font-semibold mb-4">Today's Progress</h3>
-                            <div className="grid grid-cols-3 gap-4 text-center">
-                                <div>
-                                    <div className="text-2xl font-bold text-cyan-500">{getTotalStudyTime().hours}h {getTotalStudyTime().mins}m</div>
-                                    <div className={`text-sm ${mutedTextClass}`}>Total Time</div>
+                    {/* Analytics Dashboard */}
+                    <div className="mt-8 space-y-6">
+                        {/* Analytics Header */}
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-cyan-700'}`}>Focus Analytics</h2>
+                                <p className={mutedTextClass}>Your productivity insights</p>
+                            </div>
+                            <div className={`flex items-center ${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-full px-4 py-2 shadow-sm`}>
+                                <span className={`text-sm font-medium ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>This Week</span>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            {/* Left Column - Charts */}
+                            <div className="lg:col-span-8 space-y-6">
+                                {/* Daily Overview */}
+                                <div className={`${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-3xl p-6 shadow-sm`}>
+                                    <div className="flex justify-between items-end mb-6">
+                                        <div>
+                                            <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-cyan-700'} mb-1`}>Daily Overview</h3>
+                                            <div className="flex items-baseline gap-2">
+                                                <span className={`text-3xl font-bold ${isDark ? 'text-white' : 'text-zinc-900'}`}>
+                                                    {getTotalStudyTime().hours}h {getTotalStudyTime().mins}m
+                                                </span>
+                                                {completedSessions.length > 0 && (
+                                                    <span className="text-green-500 font-medium text-sm">↑ {completedSessions.length} sessions</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4 text-xs font-semibold uppercase tracking-wider">
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-3 h-3 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600"></span>
+                                                <span className={mutedTextClass}>Focus</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`w-3 h-3 rounded-full ${isDark ? 'bg-zinc-700' : 'bg-zinc-300'}`}></span>
+                                                <span className={mutedTextClass}>Break</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Bar Chart */}
+                                    <div className="h-40 flex items-end gap-2 px-1">
+                                        {[40, 65, 85, 45, 25, 70, 55, 75, 35].map((height, i) => (
+                                            <div key={i} className="flex flex-col items-center gap-2 flex-1 group">
+                                                <div className={`w-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-100'} rounded-full h-32 relative flex flex-col justify-end overflow-hidden`}>
+                                                    <div
+                                                        className={`w-full rounded-full bg-gradient-to-t from-cyan-600 to-cyan-400 transition-all group-hover:opacity-100 ${i === 2 ? 'opacity-100' : 'opacity-60'}`}
+                                                        style={{ height: `${height}%` }}
+                                                    />
+                                                </div>
+                                                <span className={`text-[10px] font-medium ${i === 2 ? (isDark ? 'text-cyan-400' : 'text-cyan-600 font-bold') : mutedTextClass}`}>
+                                                    {12 + i}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="text-2xl font-bold text-green-500">{completedSessions.length}</div>
-                                    <div className={`text-sm ${mutedTextClass}`}>Sessions</div>
+
+                                {/* Activity Trends */}
+                                <div className={`${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-3xl p-6 shadow-sm`}>
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className={`text-lg font-bold ${isDark ? 'text-white' : 'text-cyan-700'}`}>Activity Trends</h3>
+                                    </div>
+                                    <div className="h-32 grid grid-cols-7 gap-4 items-end">
+                                        {[
+                                            { day: 'Mon', focus: 40, break: 30 },
+                                            { day: 'Tue', focus: 65, break: 50 },
+                                            { day: 'Wed', focus: 25, break: 15 },
+                                            { day: 'Thu', focus: 80, break: 70 },
+                                            { day: 'Fri', focus: 50, break: 55, active: true },
+                                            { day: 'Sat', focus: 30, break: 20 },
+                                            { day: 'Sun', focus: 15, break: 10 },
+                                        ].map((item, i) => (
+                                            <div key={i} className="group flex flex-col items-center gap-2 h-full justify-end cursor-pointer">
+                                                <div className="flex items-end gap-1 h-full w-full justify-center">
+                                                    <div
+                                                        className={`w-2 rounded-t-sm ${isDark ? 'bg-cyan-500' : 'bg-cyan-600'} ${item.active ? 'opacity-100' : 'opacity-40'}`}
+                                                        style={{ height: `${item.focus}%` }}
+                                                    />
+                                                    <div
+                                                        className="w-2 rounded-t-sm bg-amber-500"
+                                                        style={{ height: `${item.break}%` }}
+                                                    />
+                                                </div>
+                                                <span className={`text-xs ${item.active ? (isDark ? 'font-bold text-cyan-400' : 'font-bold text-cyan-600') : mutedTextClass}`}>
+                                                    {item.day}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="text-2xl font-bold text-orange-500">{getTotalStudyTime().total}</div>
-                                    <div className={`text-sm ${mutedTextClass}`}>Minutes</div>
+                            </div>
+
+                            {/* Right Column - Stats Cards */}
+                            <div className="lg:col-span-4 space-y-4">
+                                {/* Stat Cards */}
+                                <div className={`${cardBgClass} border-2 ${isDark ? 'border-cyan-800/30' : 'border-cyan-200'} rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all cursor-pointer flex items-center gap-4`}>
+                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-cyan-900/30' : 'bg-cyan-100'} flex items-center justify-center text-cyan-500 shrink-0`}>
+                                        ⏱️
+                                    </div>
+                                    <div className="flex-1">
+                                        <h4 className={`font-bold ${isDark ? 'text-white' : 'text-zinc-800'}`}>Focus Streak</h4>
+                                        <p className={`text-xs ${mutedTextClass}`}>Current: {completedSessions.length} sessions</p>
+                                    </div>
+                                </div>
+
+                                <div className={`${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all cursor-pointer flex items-center gap-4`}>
+                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-amber-900/30' : 'bg-amber-100'} flex items-center justify-center text-amber-500 shrink-0`}>
+                                        🎯
+                                    </div>
+                                    <div className="flex-1">
+                                        <h4 className={`font-bold ${isDark ? 'text-white' : 'text-zinc-800'}`}>Daily Goal</h4>
+                                        <div className="flex items-center gap-2 text-xs">
+                                            <span className={`w-16 h-1.5 ${isDark ? 'bg-zinc-700' : 'bg-zinc-200'} rounded-full overflow-hidden`}>
+                                                <span className="block bg-amber-500 h-full rounded-full" style={{ width: `${Math.min((getTotalStudyTime().total / 240) * 100, 100)}%` }}></span>
+                                            </span>
+                                            <span className={mutedTextClass}>{getTotalStudyTime().total}/240 min</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={`${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all cursor-pointer flex items-center gap-4`}>
+                                    <div className={`w-12 h-12 rounded-xl ${isDark ? 'bg-green-900/30' : 'bg-green-100'} flex items-center justify-center text-green-500 shrink-0`}>
+                                        📚
+                                    </div>
+                                    <div className="flex-1">
+                                        <h4 className={`font-bold ${isDark ? 'text-white' : 'text-zinc-800'}`}>Total Minutes</h4>
+                                        <p className={`text-xs ${mutedTextClass}`}>{getTotalStudyTime().total} minutes focused</p>
+                                    </div>
+                                </div>
+
+                                {/* Most Focused Section */}
+                                <div className={`${cardBgClass} border ${isDark ? 'border-zinc-800' : 'border-zinc-200'} rounded-3xl p-5 shadow-sm flex-1`}>
+                                    <h4 className={`text-sm font-bold ${isDark ? 'text-white' : 'text-cyan-700'} mb-4`}>Session Summary</h4>
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <span className={`text-xs font-bold ${mutedTextClass} w-4`}>01</span>
+                                                <div>
+                                                    <p className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-zinc-900'}`}>Sessions</p>
+                                                    <p className={`text-[10px] ${mutedTextClass}`}>{completedSessions.length} completed</p>
+                                                </div>
+                                            </div>
+                                            <div className="relative w-10 h-10 flex items-center justify-center">
+                                                <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(#06b6d4 ${(completedSessions.length / 5) * 100}%, transparent 0)` }}></div>
+                                                <div className={`absolute inset-1 ${cardBgClass} rounded-full`}></div>
+                                                <span className={`relative text-[9px] font-bold ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>{Math.min(completedSessions.length * 20, 100)}%</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <span className={`text-xs font-bold ${mutedTextClass} w-4`}>02</span>
+                                                <div>
+                                                    <p className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-zinc-900'}`}>Focus Time</p>
+                                                    <p className={`text-[10px] ${mutedTextClass}`}>{getTotalStudyTime().hours}h {getTotalStudyTime().mins}m</p>
+                                                </div>
+                                            </div>
+                                            <div className="relative w-10 h-10 flex items-center justify-center">
+                                                <div className="absolute inset-0 rounded-full" style={{ background: `conic-gradient(#f59e0b ${Math.min((getTotalStudyTime().total / 240) * 100, 100)}%, transparent 0)` }}></div>
+                                                <div className={`absolute inset-1 ${cardBgClass} rounded-full`}></div>
+                                                <span className={`relative text-[9px] font-bold ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>{Math.min(Math.round((getTotalStudyTime().total / 240) * 100), 100)}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
         );
