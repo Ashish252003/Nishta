@@ -263,13 +263,17 @@ export default function Dashboard() {
                             </div>
                         </div>
 
-                        {/* Your Achievements */}
-                        <div className="lg:col-span-4 rounded-2xl p-6 relative overflow-hidden min-h-[280px] bg-white dark:bg-gradient-to-br dark:from-[#121a16] dark:to-[#0a0f0d] border border-gray-200 dark:border-white/10">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none"></div>
+                        {/* Achievements Card - Enhanced Glow */}
+                        <div className="lg:col-span-4 rounded-2xl p-6 relative overflow-hidden min-h-[280px] bg-gradient-to-br from-white via-yellow-50/30 to-white dark:from-[#121a16] dark:via-[#1a1e1a] dark:to-[#0a0f0d] border-2 border-yellow-400/30 dark:border-yellow-500/20 shadow-xl dark:shadow-yellow-500/10">
+                            {/* Multi-layer glow effects */}
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-yellow-400/30 dark:bg-yellow-400/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+                            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-amber-300/20 dark:bg-amber-500/15 rounded-full blur-2xl pointer-events-none"></div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-amber-400/5 pointer-events-none"></div>
+
                             <div className="flex items-center justify-between mb-8 relative z-10">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                                        <Award className="text-yellow-500 w-5 h-5" />
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400/30 to-amber-500/30 dark:from-yellow-500/25 dark:to-amber-600/25 flex items-center justify-center shadow-lg shadow-yellow-500/20">
+                                        <Award className="text-yellow-600 dark:text-yellow-400 w-5 h-5" />
                                     </div>
                                     <h3 className="font-semibold text-xl text-foreground">Achievements</h3>
                                 </div>
@@ -282,21 +286,42 @@ export default function Dashboard() {
                             </div>
 
                             <div className="relative z-10 text-center">
-                                <p className="text-[10px] uppercase font-bold tracking-[0.3em] text-muted-foreground mb-4">Current Title</p>
+                                <p className="text-[10px] uppercase font-bold tracking-[0.3em] text-muted-foreground mb-6">Current Title</p>
                                 {activeTitle ? (
-                                    <div className="relative inline-block px-8 py-4 rounded-2xl bg-yellow-500/10 dark:bg-white/5 border border-yellow-500/40"
-                                        style={{ boxShadow: '0 0 25px rgba(251, 191, 36, 0.25)' }}>
-                                        <Sparkles className="absolute -top-3 -right-3 text-yellow-500 w-5 h-5" />
-                                        <span className="text-2xl font-serif italic font-bold bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-600 dark:from-amber-200 dark:via-yellow-400 dark:to-amber-200 bg-clip-text text-transparent">
+                                    <div
+                                        className="relative inline-block px-10 py-5 rounded-2xl bg-gradient-to-br from-yellow-400/20 via-amber-300/15 to-yellow-400/20 dark:from-yellow-500/15 dark:via-amber-400/10 dark:to-yellow-500/15 border-2 border-yellow-500/50 dark:border-yellow-400/40 animate-pulse"
+                                        style={{
+                                            boxShadow: '0 0 40px rgba(251, 191, 36, 0.4), 0 0 80px rgba(251, 191, 36, 0.2), inset 0 0 20px rgba(251, 191, 36, 0.1)',
+                                        }}
+                                    >
+                                        {/* Decorative sparkles with glow */}
+                                        <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full bg-yellow-400/30 dark:bg-yellow-500/20 blur-md"></div>
+                                        <Sparkles className="absolute -top-3 -right-3 text-yellow-500 dark:text-yellow-400 w-6 h-6 drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]" />
+
+                                        <div className="absolute -bottom-3 -left-3 w-6 h-6 rounded-full bg-yellow-400/20 dark:bg-yellow-500/15 blur-sm"></div>
+                                        <Sparkles className="absolute -bottom-2 -left-3 text-yellow-500/70 dark:text-yellow-400/60 w-5 h-5 drop-shadow-[0_0_6px_rgba(234,179,8,0.4)]" />
+
+                                        {/* Title text with enhanced gradient and glow */}
+                                        <span
+                                            className="text-3xl font-serif italic font-bold bg-gradient-to-r from-amber-700 via-yellow-500 to-amber-700 dark:from-amber-300 dark:via-yellow-300 dark:to-amber-300 bg-clip-text text-transparent"
+                                            style={{
+                                                filter: 'drop-shadow(0 0 10px rgba(251, 191, 36, 0.5))',
+                                            }}
+                                        >
                                             {activeTitle}
                                         </span>
-                                        <Sparkles className="absolute -bottom-2 -left-3 text-yellow-500/40 w-4 h-4" />
+
+                                        {/* Inner glow effect */}
+                                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-yellow-400/10 to-transparent pointer-events-none"></div>
                                     </div>
                                 ) : (
-                                    <div className="text-center py-4">
-                                        <Sparkles className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                                        <p className="text-muted-foreground text-sm">No title yet</p>
-                                        <p className="text-muted-foreground text-xs mt-1">Complete focus sessions to earn!</p>
+                                    <div className="text-center py-6">
+                                        <div className="relative inline-block mb-3">
+                                            <div className="absolute inset-0 bg-yellow-400/20 dark:bg-yellow-500/10 rounded-full blur-xl"></div>
+                                            <Sparkles className="relative w-10 h-10 text-yellow-500/60 dark:text-yellow-400/40 mx-auto" />
+                                        </div>
+                                        <p className="text-muted-foreground text-sm font-medium">No title yet</p>
+                                        <p className="text-muted-foreground text-xs mt-1.5">Complete focus sessions to earn!</p>
                                     </div>
                                 )}
                             </div>
