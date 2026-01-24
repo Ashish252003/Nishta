@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import StudyWithMe from "./pages/StudyWithMe";
 import Achievements from "./pages/Achievements";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -30,15 +31,15 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    console.log('🔵 [PROTECTED ROUTE] Checking authentication...');
+    console.log("🔵 [PROTECTED ROUTE] Checking authentication...");
     const checkAuth = async () => {
       try {
         const user = await authService.getCurrentUser();
-        console.log('🔵 [PROTECTED ROUTE] getCurrentUser result:', user);
+        console.log("🔵 [PROTECTED ROUTE] getCurrentUser result:", user);
         setIsAuthenticated(!!user);
-        console.log('🟢 [PROTECTED ROUTE] isAuthenticated set to:', !!user);
+        console.log("🟢 [PROTECTED ROUTE] isAuthenticated set to:", !!user);
       } catch (error) {
-        console.error('🔴 [PROTECTED ROUTE] Error checking auth:', error);
+        console.error("🔴 [PROTECTED ROUTE] Error checking auth:", error);
         setIsAuthenticated(false);
       }
     };
@@ -46,7 +47,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (isAuthenticated === null) {
-    console.log('🟡 [PROTECTED ROUTE] Still checking auth, showing loading...');
+    console.log("🟡 [PROTECTED ROUTE] Still checking auth, showing loading...");
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
@@ -58,9 +59,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    console.log('🔴 [PROTECTED ROUTE] Not authenticated, redirecting to /login');
+    console.log(
+      "🔴 [PROTECTED ROUTE] Not authenticated, redirecting to /login",
+    );
   } else {
-    console.log('🟢 [PROTECTED ROUTE] Authenticated, rendering children');
+    console.log("🟢 [PROTECTED ROUTE] Authenticated, rendering children");
   }
 
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
@@ -153,8 +156,15 @@ const App = () => (
             }
           />
 
-          {/* Redirect root to login */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          {/* Landing page - Protected, shows after login */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Landing />
+              </ProtectedRoute>
+            }
+          />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
