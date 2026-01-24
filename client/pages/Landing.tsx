@@ -125,19 +125,9 @@ export default function Landing() {
             <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-xl leading-relaxed">
               Everything you need for academic success - mental wellness tracking, focus sessions, and study communities. All in one place.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/dashboard"
-                className="px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-center btn-animate text-lg"
-              >
-                Enter Nishta
-              </Link>
-              <Link
-                to="/study"
-                className="px-8 py-4 bg-white border-2 border-gray-200 text-gray-900 rounded-xl font-bold text-center hover:border-blue-600 transition-all text-lg"
-              >
-                Start Focus Timer
-              </Link>
+            <div className="flex items-center gap-4 text-gray-500">
+              <span className="animate-bounce">↓</span>
+              <span className="text-sm font-medium">Scroll down to explore our apps</span>
             </div>
           </div>
           <div className="relative">
